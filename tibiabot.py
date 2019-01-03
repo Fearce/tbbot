@@ -451,23 +451,17 @@ def program():
     pyautogui.FAILSAFE = True
     while True:
         if attack_status == 'on':
-            attack_thread = threading.Thread(target=attack_do)
-            attack_thread.start()
+            attack_do()
         if manatrain_status == 'on':
-            manatrain_thread = threading.Thread(target=manatrain_do)
-            manatrain_thread.start()
+            manatrain_do()
         if food_status == 'on':
-            food_thread = threading.Thread(target=food_do)
-            food_thread.start()
+            food_do()
         if heal_status == 'on':
-            heal_thread = threading.Thread(target=heal_do)
-            heal_thread.start()
+            heal_do()
         if healpot_status == 'on':
-            heal_pot_thread = threading.Thread(target=healpot_do)
-            heal_pot_thread.start()
+            healpot_do()
         if manapot_status == 'on':
-            mana_pot_thread = threading.Thread(target=manapot_do)
-            mana_pot_thread.start()
+            manapot_do()
         rand_sleep(5)
 
 
