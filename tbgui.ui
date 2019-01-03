@@ -259,5 +259,29 @@
         </layout>
       </object>
     </child>
+    <child>
+      <object class="ttk.Button" id="btn_start_all">
+        <property name="command">start_all</property>
+        <property name="text" translatable="yes">Start all</property>
+        <layout>
+          <property name="column">0</property>
+          <property name="propagate">True</property>
+          <property name="row">2</property>
+          <property name="sticky">e</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Button" id="btn_stop_all">
+        <property name="command">stop_all</property>
+        <property name="text" translatable="yes">Stop all</property>
+        <layout>
+          <property name="column">0</property>
+          <property name="propagate">True</property>
+          <property name="row">4</property>
+          <property name="sticky">e</property>
+        </layout>
+      </object>
+    </child>
   </object>
 </interface>

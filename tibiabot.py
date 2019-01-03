@@ -110,17 +110,19 @@ def attack_do():
     if not pyautogui.pixelMatchesColor(attack_x, attack_y, attack_col):
         if not pyautogui.pixelMatchesColor(attack_x, attack_y, (77, 77, 77)):
             pyautogui.click(attack_x, attack_y)
-    rand_sleep(3)
 
 
 def heal_start():
+    global heal_status
     var_name = 'heal_status'
     var = app.builder.get_variable(var_name)
     if var.get() == "off":  # Enable
+        heal_status = 'on'
         log_add("Starting heal")
         newlabel = 'on'
         var.set(newlabel)
     else:
+        heal_status = 'off'
         log_add("Stopping heal")
         newlabel = 'off'
         var.set(newlabel)
@@ -147,20 +149,25 @@ def manatrain_start():
 
 
 def manatrain_do():
-    print("trying mana train")
+    #print("trying mana train")
     if pyautogui.pixelMatchesColor(mana_train_x, mana_train_y, mana_train_col):
-        print("doing mana train")
+        #print("doing mana train")
+        log_add("Casting mana training spell")
         pyautogui.hotkey(str(mana_train_key))
-    rand_sleep(4)
 
 
 def manapot_start():
+    global manapot_status
     var_name = 'manapot_status'
     var = app.builder.get_variable(var_name)
     if var.get() == "off":  # Enable
+        log_add("Starting mana pots")
+        manapot_status = 'on'
         newlabel = 'on'
         var.set(newlabel)
     else:
+        log_add("Stopping mana pots")
+        manapot_status = 'off'
         newlabel = 'off'
         var.set(newlabel)
 
@@ -205,12 +212,17 @@ def set_manatrain_thread():
 
 
 def healpot_start():
+    global healpot_status
     var_name = 'healpot_status'
     var = app.builder.get_variable(var_name)
     if var.get() == "off":  # Enable
+        log_add("Starting heal pots")
+        healpot_status = 'on'
         newlabel = 'on'
         var.set(newlabel)
     else:
+        log_add("Stopping heal pots")
+        healpot_status = 'off'
         newlabel = 'off'
         var.set(newlabel)
 
@@ -221,6 +233,38 @@ def setup_manapot():
 
 def setup_heal():
     print('not implemented')
+    
+    
+def start_all():
+    global attack_status, manatrain_status, food_status, heal_status, healpot_status, manapot_status
+    if attack_status == 'off':
+        attack_start()
+    if manatrain_status == 'off':
+        manatrain_start()
+    if food_status == 'off':
+        food_start() 
+    if heal_status == 'off':
+        heal_start() 
+    if healpot_status == 'off':
+        healpot_start()
+    if manapot_status == 'off':
+        manapot_start()
+        
+        
+def stop_all():
+    global attack_status, manatrain_status, food_status, heal_status, healpot_status, manapot_status
+    if attack_status == 'on':
+        attack_start()
+    if manatrain_status == 'on':
+        manatrain_start()
+    if food_status == 'on':
+        food_start() 
+    if heal_status == 'on':
+        heal_start() 
+    if healpot_status == 'on':
+        healpot_start()
+    if manapot_status == 'on':
+        manapot_start()
 
 
 def food_start():
@@ -241,6 +285,7 @@ def food_start():
 
 def food_do():
     pyautogui.hotkey(str(food_key))
+
 
 class Application:
     def __init__(self, master):
@@ -267,6 +312,8 @@ class Application:
             'setup_manapot': setup_manapot,
             'setup_heal': setup_heal,
             'food_start': food_start,
+            'start_all': start_all,
+            'stop_all': stop_all,
         }
 
         builder.connect_callbacks(callbacks)
@@ -278,12 +325,15 @@ def program():
     pyautogui.FAILSAFE = True
     while True:
         if attack_status == 'on':
-            attack_do()
+            attack_thread = threading.Thread(target=attack_do)
+            attack_thread.start()
         if manatrain_status == 'on':
-            manatrain_do()
+            manatrain_thread = threading.Thread(target=manatrain_do)
+            manatrain_thread.start()
         if food_status == 'on':
-            food_do()
-        rand_sleep(2)
+            food_thread = threading.Thread(target=food_do)
+            food_thread.start()
+        rand_sleep(5)
 
 
 if __name__ == '__main__':
