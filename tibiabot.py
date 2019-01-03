@@ -9,6 +9,15 @@ import winsound
 import sys
 import pygubu
 
+
+def str_to_col(str_input):
+    str_input = str_input.split('(')
+    str_input = str_input[1].split(')')
+    str_input = str_input[0].split(',')
+    str_input = (int(str_input[0]), int(str_input[1]), int(str_input[2]))
+    return str_input
+
+
 settings_file = open('cfg.ini').read()  # Opens config
 settingsOrig = settings_file.split('\n')
 settings = []
@@ -19,30 +28,41 @@ for s in settingsOrig:
 #for ss in settings:
 #    print(ss)
 
-window_height = settings[0]
-window_width = settings[1]
-heal_spell_x = settings[2]
-heal_spell_y = settings[3]
+window_height = int(settings[0])
+window_width = int(settings[1])
+heal_spell_x = int(settings[2])
+heal_spell_y = int(settings[3])
 heal_spell_col = settings[4]
+heal_spell_col = str_to_col(heal_spell_col)
 heal_spell_key = settings[5]
-mana_train_x = settings[6]
-mana_train_y = settings[7]
+mana_train_x = int(settings[6])
+mana_train_y = int(settings[7])
 mana_train_col = settings[8]
+mana_train_col = str_to_col(mana_train_col)
 mana_train_key = settings[9]
-mana_pot_x = settings[10]
-mana_pot_y = settings[11]
+mana_pot_x = int(settings[10])
+mana_pot_y = int(settings[11])
 mana_pot_col = settings[12]
+mana_pot_col = str_to_col(mana_pot_col)
 mana_pot_key = settings[13]
-heal_pot_x = settings[14]
-heal_pot_y = settings[15]
+heal_pot_x = int(settings[14])
+heal_pot_y = int(settings[15])
 heal_pot_col = settings[16]
+heal_pot_col = str_to_col(heal_pot_col)
 heal_pot_key = settings[17]
 food_key = settings[18]
-attack_x = settings[19]
-attack_y = settings[20]
+attack_x = int(settings[19])
+attack_y = int(settings[20])
 attack_col = settings[21]
+attack_col = str_to_col(attack_col)
+
 
 attack_status = 'off'
+heal_status = 'off'
+manatrain_status = 'off'
+manapot_status = 'off'
+healpot_status = 'off'
+food_status = 'off'
 
 
 def current_time():  # Makes sure the log frame isn't flooded and returns current time.
@@ -52,21 +72,27 @@ def current_time():  # Makes sure the log frame isn't flooded and returns curren
     return datetime.datetime.now().strftime("%H:%M:%S")
 
 
+def rand_sleep(to_int):
+    time.sleep(random.randint(1, to_int))
+
+
 def attack_start():
     global attack_status
     var_name = 'attack_status'
     var = app.builder.get_variable(var_name)
     if var.get() == "off":  # Enable
+        log_add("Starting attack, put cursor on first battle list target.")
         newlabel = 'on'
         attack_status = 'on'
         var.set(newlabel)
     else:
+        log_add("Stopping attack")
         newlabel = 'off'
         attack_status = 'off'
         var.set(newlabel)
 
 
-def log_add(message):
+def log_add(message):  # Adds message to log frame and log file
     log_message = current_time() + " " + message + "\n"
     log_file_name = "log-" + datetime.datetime.now().strftime("%d-%m-%Y")+".txt"
     log_file = open(log_file_name, 'a+')
@@ -78,18 +104,24 @@ def setup_attack():
     print('not implemented')
 
 def attack_do():
-    print("attacking")
-    log_add("Picking play again in 5")
-    time.sleep(1)
+    #print(attack_col)
+    #print(attack_x)
+    #print(attack_y)
+    if not pyautogui.pixelMatchesColor(attack_x, attack_y, attack_col):
+        if not pyautogui.pixelMatchesColor(attack_x, attack_y, (77, 77, 77)):
+            pyautogui.click(attack_x, attack_y)
+    rand_sleep(3)
 
 
 def heal_start():
     var_name = 'heal_status'
     var = app.builder.get_variable(var_name)
     if var.get() == "off":  # Enable
+        log_add("Starting heal")
         newlabel = 'on'
         var.set(newlabel)
     else:
+        log_add("Stopping heal")
         newlabel = 'off'
         var.set(newlabel)
 
@@ -99,14 +131,27 @@ def setup_healpot():
 
 
 def manatrain_start():
+    global manatrain_status
     var_name = 'manatrain_status'
     var = app.builder.get_variable(var_name)
     if var.get() == "off":  # Enable
+        log_add("Starting mana training")
+        manatrain_status = 'on'
         newlabel = 'on'
         var.set(newlabel)
     else:
+        log_add("Stopping mana training")
+        manatrain_status = 'off'
         newlabel = 'off'
         var.set(newlabel)
+
+
+def manatrain_do():
+    print("trying mana train")
+    if pyautogui.pixelMatchesColor(mana_train_x, mana_train_y, mana_train_col):
+        print("doing mana train")
+        pyautogui.hotkey(str(mana_train_key))
+    rand_sleep(4)
 
 
 def manapot_start():
@@ -125,7 +170,38 @@ def deposit_start():
 
 
 def setup_manatrain():
-    print('not implemented')
+    manatrain_thread = threading.Thread(target=set_manatrain_thread)
+    manatrain_thread.start()
+
+
+def set_manatrain_thread():
+    global mana_train_x, mana_train_y, mana_train_col
+    # print("old variables" + str(mana_train_x) + str(mana_train_y) + str(mana_train_col))
+    log_add("Picking mana train in 5, put cursor near mana value")
+    time.sleep(1)
+    log_add("Picking mana train in 4")
+    time.sleep(1)
+    log_add("Picking mana train in 3")
+    time.sleep(1)
+    log_add("Picking mana train in 2")
+    time.sleep(1)
+    log_add("Picking mana train in 1")
+    time.sleep(1)
+    mana_train_x2, mana_train_y2 = pyautogui.position()
+    im = pyautogui.screenshot()
+    mana_train_col2 = im.getpixel((mana_train_x2, mana_train_y2))
+    cfg = open("cfg.ini").read()
+    cfg = cfg.replace(str(settings[8]), str(mana_train_col2))
+    cfg = cfg.replace(str(mana_train_x), str(mana_train_x2))
+    cfg = cfg.replace(str(mana_train_y), str(mana_train_y2))
+    new_cfg = open("cfg.ini", 'w')
+    new_cfg.write(cfg)
+    new_cfg.close()
+    mana_train_col = mana_train_col2
+    mana_train_x = mana_train_x2
+    mana_train_y = mana_train_y2
+    # print("new variables" + str(mana_train_x) + str(mana_train_y) + str(mana_train_col))
+    log_add("Mana train picked and saved")
 
 
 def healpot_start():
@@ -146,6 +222,25 @@ def setup_manapot():
 def setup_heal():
     print('not implemented')
 
+
+def food_start():
+    global food_status
+    var_name = 'food_status'
+    var = app.builder.get_variable(var_name)
+    if var.get() == "off":  # Enable
+        log_add("Starting eating.")
+        newlabel = 'on'
+        food_status = 'on'
+        var.set(newlabel)
+    else:
+        log_add("Stopping eating")
+        newlabel = 'off'
+        food_status = 'off'
+        var.set(newlabel)
+
+
+def food_do():
+    pyautogui.hotkey(str(food_key))
 
 class Application:
     def __init__(self, master):
@@ -171,21 +266,24 @@ class Application:
             'healpot_start': healpot_start,
             'setup_manapot': setup_manapot,
             'setup_heal': setup_heal,
+            'food_start': food_start,
         }
 
         builder.connect_callbacks(callbacks)
 
 
-
 def program():
-    global attack_status
+    global attack_status, manatrain_status, food_status, heal_status, healpot_status, manapot_status
     print("starting")
     pyautogui.FAILSAFE = True
     while True:
         if attack_status == 'on':
-           attack_do()
-
-
+            attack_do()
+        if manatrain_status == 'on':
+            manatrain_do()
+        if food_status == 'on':
+            food_do()
+        rand_sleep(2)
 
 
 if __name__ == '__main__':

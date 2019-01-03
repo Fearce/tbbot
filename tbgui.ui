@@ -234,5 +234,30 @@
         </layout>
       </object>
     </child>
+    <child>
+      <object class="ttk.Button" id="btn_food">
+        <property name="command">food_start</property>
+        <property name="text" translatable="yes">Food</property>
+        <layout>
+          <property name="column">0</property>
+          <property name="propagate">True</property>
+          <property name="row">5</property>
+          <property name="sticky">w</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Label" id="lbl_food">
+        <property name="text" translatable="yes">off</property>
+        <property name="textvariable">string:food_status</property>
+        <layout>
+          <property name="column">0</property>
+          <property name="padx">80</property>
+          <property name="propagate">True</property>
+          <property name="row">5</property>
+          <property name="sticky">w</property>
+        </layout>
+      </object>
+    </child>
   </object>
 </interface>
