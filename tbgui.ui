@@ -1,0 +1,238 @@
+<?xml version='1.0' encoding='utf-8'?>
+<interface>
+  <object class="ttk.Frame" id="tbb_frame">
+    <property name="cursor">arrow</property>
+    <property name="height">500</property>
+    <property name="takefocus">false</property>
+    <property name="width">200</property>
+    <layout>
+      <property name="column">0</property>
+      <property name="propagate">True</property>
+      <property name="row">0</property>
+      <property name="sticky">s</property>
+    </layout>
+    <child>
+      <object class="ttk.Button" id="btn_attack">
+        <property name="command">attack_start</property>
+        <property name="text" translatable="yes">Attack</property>
+        <layout>
+          <property name="column">0</property>
+          <property name="propagate">True</property>
+          <property name="row">0</property>
+          <property name="sticky">nw</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Button" id="btn_heal">
+        <property name="command">heal_start</property>
+        <property name="text" translatable="yes">Heal</property>
+        <layout>
+          <property name="column">0</property>
+          <property name="propagate">True</property>
+          <property name="row">1</property>
+          <property name="sticky">w</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Frame" id="tbb_logframe">
+        <property name="height">200</property>
+        <property name="width">200</property>
+        <layout>
+          <property name="column">0</property>
+          <property name="propagate">True</property>
+          <property name="row">7</property>
+        </layout>
+        <child>
+          <object class="tk.Text" id="text_logframe">
+            <property name="cursor">arrow</property>
+            <property name="exportselection">false</property>
+            <property name="font">TkDefaultFont</property>
+            <property name="height">10</property>
+            <property name="relief">flat</property>
+            <property name="text" translatable="yes">Initializing</property>
+            <property name="width">50</property>
+            <layout>
+              <property name="column">0</property>
+              <property name="propagate">True</property>
+              <property name="row">0</property>
+            </layout>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Button" id="btn_manatrain">
+        <property name="command">manatrain_start</property>
+        <property name="text" translatable="yes">Manatrain</property>
+        <layout>
+          <property name="column">0</property>
+          <property name="propagate">True</property>
+          <property name="row">2</property>
+          <property name="sticky">w</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Button" id="btn_manapotion">
+        <property name="command">manapot_start</property>
+        <property name="text" translatable="yes">Mana potion</property>
+        <layout>
+          <property name="column">0</property>
+          <property name="propagate">True</property>
+          <property name="row">3</property>
+          <property name="sticky">w</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Button" id="btn_healpotion">
+        <property name="command">healpot_start</property>
+        <property name="text" translatable="yes">Heal potion</property>
+        <layout>
+          <property name="column">0</property>
+          <property name="padx">0</property>
+          <property name="propagate">True</property>
+          <property name="row">4</property>
+          <property name="sticky">w</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Label" id="lbl_attack">
+        <property name="text" translatable="yes">off</property>
+        <property name="textvariable">string:attack_status</property>
+        <layout>
+          <property name="column">0</property>
+          <property name="padx">80</property>
+          <property name="propagate">True</property>
+          <property name="row">0</property>
+          <property name="sticky">w</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Label" id="lbl_heal">
+        <property name="text" translatable="yes">off</property>
+        <property name="textvariable">string:heal_status</property>
+        <layout>
+          <property name="column">0</property>
+          <property name="padx">80</property>
+          <property name="propagate">True</property>
+          <property name="row">1</property>
+          <property name="sticky">w</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Label" id="lbl_manatrain">
+        <property name="text" translatable="yes">off</property>
+        <property name="textvariable">string:manatrain_status</property>
+        <layout>
+          <property name="column">0</property>
+          <property name="padx">80</property>
+          <property name="propagate">True</property>
+          <property name="row">2</property>
+          <property name="sticky">w</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Button" id="btn_deposit">
+        <property name="command">deposit_start</property>
+        <property name="compound">top</property>
+        <property name="cursor">arrow</property>
+        <property name="state">normal</property>
+        <property name="text" translatable="yes">Deposit</property>
+        <layout>
+          <property name="column">0</property>
+          <property name="propagate">True</property>
+          <property name="row">0</property>
+          <property name="sticky">e</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Button" id="setup_attack">
+        <property name="command">setup_attack</property>
+        <property name="text" translatable="yes">Setup</property>
+        <layout>
+          <property name="column">0</property>
+          <property name="propagate">True</property>
+          <property name="row">0</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Button" id="setup_heal">
+        <property name="command">setup_heal</property>
+        <property name="text" translatable="yes">Setup</property>
+        <layout>
+          <property name="column">0</property>
+          <property name="propagate">True</property>
+          <property name="row">1</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Button" id="setup_manatrain">
+        <property name="command">setup_manatrain</property>
+        <property name="text" translatable="yes">Setup</property>
+        <layout>
+          <property name="column">0</property>
+          <property name="propagate">True</property>
+          <property name="row">2</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Button" id="setup_manapot">
+        <property name="command">setup_manapot</property>
+        <property name="text" translatable="yes">Setup</property>
+        <layout>
+          <property name="column">0</property>
+          <property name="propagate">True</property>
+          <property name="row">3</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Label" id="lbl_manapot">
+        <property name="text" translatable="yes">off</property>
+        <property name="textvariable">string:manapot_status</property>
+        <layout>
+          <property name="column">0</property>
+          <property name="padx">80</property>
+          <property name="propagate">True</property>
+          <property name="row">3</property>
+          <property name="sticky">w</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Label" id="lbl_healpot">
+        <property name="text" translatable="yes">off</property>
+        <property name="textvariable">string:healpot_status</property>
+        <layout>
+          <property name="column">0</property>
+          <property name="padx">80</property>
+          <property name="propagate">True</property>
+          <property name="row">4</property>
+          <property name="sticky">w</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Button" id="setup_healpot">
+        <property name="command">setup_healpot</property>
+        <property name="text" translatable="yes">Setup</property>
+        <layout>
+          <property name="column">0</property>
+          <property name="propagate">True</property>
+          <property name="row">4</property>
+        </layout>
+      </object>
+    </child>
+  </object>
+</interface>
