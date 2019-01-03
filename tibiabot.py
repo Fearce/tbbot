@@ -45,7 +45,10 @@ attack_col = settings[21]
 attack_status = 'off'
 
 
-def current_time():
+def current_time():  # Makes sure the log frame isn't flooded and returns current time.
+    log_count = int(app.builder.get_object('text_logframe').index('end-1c').split('.')[0])
+    if log_count > 9:
+        app.builder.get_object('text_logframe').delete("end-1c linestart", "end")
     return datetime.datetime.now().strftime("%H:%M:%S")
 
 
@@ -63,12 +66,20 @@ def attack_start():
         var.set(newlabel)
 
 
+def log_add(message):
+    log_message = current_time() + " " + message + "\n"
+    log_file_name = "log-" + datetime.datetime.now().strftime("%d-%m-%Y")+".txt"
+    log_file = open(log_file_name, 'a+')
+    log_file.write(log_message)
+    app.builder.get_object('text_logframe').insert('1.0', log_message)
+
+
 def setup_attack():
     print('not implemented')
 
 def attack_do():
     print("attacking")
-    app.builder.get_object('text_logframe').insert('1.0', current_time() + " Picking play again in 5\n")
+    log_add("Picking play again in 5")
     time.sleep(1)
 
 
