@@ -55,6 +55,8 @@ attack_x = int(settings[19])
 attack_y = int(settings[20])
 attack_col = settings[21]
 attack_col = str_to_col(attack_col)
+loot_x = int(settings[22])
+loot_y = int(settings[23])
 
 attack_status = 'off'
 heal_status = 'off'
@@ -62,6 +64,7 @@ manatrain_status = 'off'
 manapot_status = 'off'
 healpot_status = 'off'
 food_status = 'off'
+loot_status = 'off'
 
 
 def current_time():  # Makes sure the log frame isn't flooded and returns current time.
@@ -100,16 +103,63 @@ def log_add(message):  # Adds message to log frame and log file
 
 
 def setup_attack():
-    print('not implemented')
+    attack_thread = threading.Thread(target=set_attack_thread)
+    attack_thread.start()
+
+
+def set_attack_thread():
+    global attack_x, attack_y, attack_col
+    # print("old variables" + str(attack_x) + str(attack_y) + str(attack_col))
+    log_add("Picking attack in 5, put cursor near mana value")
+    time.sleep(1)
+    log_add("Picking attack in 4")
+    time.sleep(1)
+    log_add("Picking attack in 3")
+    time.sleep(1)
+    log_add("Picking attack in 2")
+    time.sleep(1)
+    log_add("Picking attack in 1")
+    time.sleep(1)
+    attack_x2, attack_y2 = pyautogui.position()
+    im = pyautogui.screenshot()
+    attack_col2 = im.getpixel((attack_x2, attack_y2))
+    cfg = open("cfg.ini").read()
+    cfg = cfg.replace("attackCol=" + str(settings[21]), "attackCol=" + str(attack_col2))
+    cfg = cfg.replace("attackX=" + str(attack_x), "attackX=" + str(attack_x2))
+    cfg = cfg.replace("attackY=" + str(attack_y), "attackY=" + str(attack_y2))
+    new_cfg = open("cfg.ini", 'w')
+    new_cfg.write(cfg)
+    new_cfg.close()
+    attack_col = attack_col2
+    attack_x = attack_x2
+    attack_y = attack_y2
+    # print("new variables" + str(attack_x) + str(attack_y) + str(attack_col))
+    log_add("attack picked and saved")
+
+
+def loot_do():
+    loot_positions = [(loot_x, loot_y-40),
+                      (loot_x, loot_y+50),
+                      (loot_x+40, loot_y+50),
+                      (loot_x - 50, loot_y + 50),
+                      (loot_x + 40, loot_y),
+                      (loot_x - 50, loot_y),
+                      (loot_x - 50, loot_y - 40),
+                      (loot_x + 40, loot_y - 40)]
+    for pos in loot_positions:
+        pyautogui.click(pos, button='right')
+        time.sleep(0.01)
 
 
 def attack_do():
     # print(attack_col)
     # print(attack_x)
     # print(attack_y)
-    if not pyautogui.pixelMatchesColor(attack_x, attack_y, attack_col):
+    if pyautogui.pixelMatchesColor(attack_x, attack_y, attack_col):
         if not pyautogui.pixelMatchesColor(attack_x, attack_y, (77, 77, 77)):
             pyautogui.click(attack_x, attack_y)
+            loot_do()
+            pyautogui.moveTo(attack_x, attack_y, 1)
 
 
 def heal_start():
@@ -256,6 +306,22 @@ def healpot_start():
         var.set(newlabel)
 
 
+def loot_start():
+    global loot_status
+    var_name = 'loot_status'
+    var = app.builder.get_variable(var_name)
+    if var.get() == "off":  # Enable
+        log_add("Starting auto loot")
+        loot_status = 'on'
+        newlabel = 'on'
+        var.set(newlabel)
+    else:
+        log_add("Stopping auto loot")
+        loot_status = 'off'
+        newlabel = 'off'
+        var.set(newlabel)
+        
+
 def setup_manapot():
     manapot_thread = threading.Thread(target=set_manapot_thread)
     manapot_thread.start()
@@ -326,6 +392,41 @@ def set_heal_thread():
     log_add("heal spell picked and saved")
 
 
+def setup_loot():
+    loot_thread = threading.Thread(target=set_loot_thread)
+    loot_thread.start()
+
+
+def set_loot_thread():
+    global loot_x, loot_y
+    # print("old variables" + str(mana_train_x) + str(mana_train_y) + str(mana_train_col))
+    log_add("Picking loot in 5, put cursor at middle char")
+    time.sleep(1)
+    log_add("Picking loot in 4")
+    time.sleep(1)
+    log_add("Picking loot in 3")
+    time.sleep(1)
+    log_add("Picking loot in 2")
+    time.sleep(1)
+    log_add("Picking loot in 1")
+    time.sleep(1)
+    loot_x2, loot_y2 = pyautogui.position()
+    im = pyautogui.screenshot()
+    loot_col2 = im.getpixel((loot_x2, loot_y2))
+    cfg = open("cfg.ini").read()
+    cfg = cfg.replace("lootX=" + str(loot_x), "lootX=" + str(loot_x2))
+    cfg = cfg.replace("lootY=" + str(loot_y), "lootY=" + str(loot_y2))
+    new_cfg = open("cfg.ini", 'w')
+    new_cfg.write(cfg)
+    new_cfg.close()
+    loot_col = loot_col2
+    loot_x = loot_x2
+    loot_y = loot_y2
+    # print("new variables" + str(loot_x) + str(loot_y) + str(loot_col))
+    log_add("loot pos picked and saved")
+
+
+
 def set_healpot_thread():
     global heal_pot_x, heal_pot_y, heal_pot_col
     # print("old variables" + str(heal_train_x) + str(heal_train_y) + str(heal_train_col))
@@ -362,7 +463,7 @@ def setup_healpot():
 
 
 def start_all():
-    global attack_status, manatrain_status, food_status, heal_status, healpot_status, manapot_status
+    global attack_status, manatrain_status, food_status, heal_status, healpot_status, manapot_status, loot_status
     if attack_status == 'off':
         attack_start()
     if manatrain_status == 'off':
@@ -375,10 +476,12 @@ def start_all():
         healpot_start()
     if manapot_status == 'off':
         manapot_start()
+    if loot_status == 'off':
+        loot_start()
 
 
 def stop_all():
-    global attack_status, manatrain_status, food_status, heal_status, healpot_status, manapot_status
+    global attack_status, manatrain_status, food_status, heal_status, healpot_status, manapot_status, loot_status
     if attack_status == 'on':
         attack_start()
     if manatrain_status == 'on':
@@ -391,6 +494,8 @@ def stop_all():
         healpot_start()
     if manapot_status == 'on':
         manapot_start()
+    if loot_status == 'on':
+        loot_start()
 
 
 def food_start():
@@ -440,6 +545,8 @@ class Application:
             'food_start': food_start,
             'start_all': start_all,
             'stop_all': stop_all,
+            'loot_start': loot_start,
+            'setup_loot': setup_loot,
         }
 
         builder.connect_callbacks(callbacks)

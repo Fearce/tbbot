@@ -283,5 +283,42 @@
         </layout>
       </object>
     </child>
+    <child>
+      <object class="ttk.Button" id="btn_loot">
+        <property name="command">loot_start</property>
+        <property name="text" translatable="yes">Looting</property>
+        <layout>
+          <property name="column">0</property>
+          <property name="propagate">True</property>
+          <property name="row">6</property>
+          <property name="sticky">w</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Label" id="lbl_loot">
+        <property name="compound">top</property>
+        <property name="text" translatable="yes">off</property>
+        <property name="textvariable">string:loot_status</property>
+        <layout>
+          <property name="column">0</property>
+          <property name="padx">80</property>
+          <property name="propagate">True</property>
+          <property name="row">6</property>
+          <property name="sticky">w</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Button" id="setup_loot">
+        <property name="command">setup_loot</property>
+        <property name="text" translatable="yes">Setup</property>
+        <layout>
+          <property name="column">0</property>
+          <property name="propagate">True</property>
+          <property name="row">6</property>
+        </layout>
+      </object>
+    </child>
   </object>
 </interface>
