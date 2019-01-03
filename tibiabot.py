@@ -128,10 +128,6 @@ def heal_start():
         var.set(newlabel)
 
 
-def setup_healpot():
-    print('not implemented')
-
-
 def manatrain_start():
     global manatrain_status
     var_name = 'manatrain_status'
@@ -156,6 +152,24 @@ def manatrain_do():
         pyautogui.hotkey(str(mana_train_key))
 
 
+def healpot_do():
+    if not pyautogui.pixelMatchesColor(heal_pot_x, heal_pot_y, heal_pot_col):
+        log_add("Using healing potion")
+        pyautogui.hotkey(str(heal_pot_key))
+
+
+def manapot_do():
+    if not pyautogui.pixelMatchesColor(mana_pot_x, mana_pot_y, mana_pot_col):
+        log_add("Using mana potion")
+        pyautogui.hotkey(str(mana_pot_key))
+
+
+def heal_do():
+    if not pyautogui.pixelMatchesColor(heal_spell_x, heal_spell_y, heal_spell_col):
+        log_add("Casting healing spell")
+        pyautogui.hotkey(str(heal_spell_key))
+
+
 def manapot_start():
     global manapot_status
     var_name = 'manapot_status'
@@ -173,7 +187,22 @@ def manapot_start():
 
 
 def deposit_start():
-    print('not implemented')
+    deposit_thread = threading.Thread(target=deposit_do)
+    deposit_thread.start()
+
+
+def deposit_do():
+    log_add("Starting deposit")
+    rand_sleep(1)
+    pyautogui.typewrite('Hi', interval=0.1)
+    pyautogui.hotkey('enter')
+    rand_sleep(1)
+    pyautogui.typewrite('deposit all', interval=0.07)
+    pyautogui.hotkey('enter')
+    rand_sleep(1)
+    pyautogui.typewrite('yes', interval=0.09)
+    pyautogui.hotkey('enter')
+    log_add("Deposit done")
 
 
 def setup_manatrain():
@@ -198,9 +227,9 @@ def set_manatrain_thread():
     im = pyautogui.screenshot()
     mana_train_col2 = im.getpixel((mana_train_x2, mana_train_y2))
     cfg = open("cfg.ini").read()
-    cfg = cfg.replace(str(settings[8]), str(mana_train_col2))
-    cfg = cfg.replace(str(mana_train_x), str(mana_train_x2))
-    cfg = cfg.replace(str(mana_train_y), str(mana_train_y2))
+    cfg = cfg.replace("manatrainCol="+str(settings[8]), "manatrainCol="+str(mana_train_col2))
+    cfg = cfg.replace("manatrainX="+str(mana_train_x), "manatrainX="+str(mana_train_x2))
+    cfg = cfg.replace("manatrainY="+str(mana_train_y), "manatrainY="+str(mana_train_y2))
     new_cfg = open("cfg.ini", 'w')
     new_cfg.write(cfg)
     new_cfg.close()
@@ -228,13 +257,110 @@ def healpot_start():
 
 
 def setup_manapot():
-    print('not implemented')
+    manapot_thread = threading.Thread(target=set_manapot_thread)
+    manapot_thread.start()
+
+
+def set_manapot_thread():
+    global mana_pot_x, mana_pot_y, mana_pot_col
+    # print("old variables" + str(mana_train_x) + str(mana_train_y) + str(mana_train_col))
+    log_add("Picking mana pot in 5, put cursor near mana value")
+    time.sleep(1)
+    log_add("Picking mana pot in 4")
+    time.sleep(1)
+    log_add("Picking mana pot in 3")
+    time.sleep(1)
+    log_add("Picking mana pot in 2")
+    time.sleep(1)
+    log_add("Picking mana pot in 1")
+    time.sleep(1)
+    mana_pot_x2, mana_pot_y2 = pyautogui.position()
+    im = pyautogui.screenshot()
+    mana_pot_col2 = im.getpixel((mana_pot_x2, mana_pot_y2))
+    cfg = open("cfg.ini").read()
+    cfg = cfg.replace("manapotCol="+str(settings[12]), "manapotCol="+str(mana_pot_col2))
+    cfg = cfg.replace("manapotX="+str(mana_pot_x), "manapotX="+str(mana_pot_x2))
+    cfg = cfg.replace("manapotY="+str(mana_pot_y), "manapotY="+str(mana_pot_y2))
+    new_cfg = open("cfg.ini", 'w')
+    new_cfg.write(cfg)
+    new_cfg.close()
+    mana_pot_col = mana_pot_col2
+    mana_pot_x = mana_pot_x2
+    mana_pot_y = mana_pot_y2
+    # print("new variables" + str(mana_pot_x) + str(mana_pot_y) + str(mana_pot_col))
+    log_add("Mana pot picked and saved")
 
 
 def setup_heal():
-    print('not implemented')
-    
-    
+    heal_thread = threading.Thread(target=set_heal_thread)
+    heal_thread.start()
+
+
+def set_heal_thread():
+    global heal_spell_x, heal_spell_y, heal_spell_col
+    # print("old variables" + str(mana_train_x) + str(mana_train_y) + str(mana_train_col))
+    log_add("Picking heal spell in 5, put cursor near mana value")
+    time.sleep(1)
+    log_add("Picking heal spell in 4")
+    time.sleep(1)
+    log_add("Picking heal spell in 3")
+    time.sleep(1)
+    log_add("Picking heal spell in 2")
+    time.sleep(1)
+    log_add("Picking heal spell in 1")
+    time.sleep(1)
+    heal_spell_x2, heal_spell_y2 = pyautogui.position()
+    im = pyautogui.screenshot()
+    heal_spell_col2 = im.getpixel((heal_spell_x2, heal_spell_y2))
+    cfg = open("cfg.ini").read()
+    cfg = cfg.replace("healspellCol="+str(settings[4]), "healspellCol="+str(heal_spell_col2))
+    cfg = cfg.replace("healspellX="+str(heal_spell_x), "healspellX="+str(heal_spell_x2))
+    cfg = cfg.replace("healspellY="+str(heal_spell_y), "healspellY="+str(heal_spell_y2))
+    new_cfg = open("cfg.ini", 'w')
+    new_cfg.write(cfg)
+    new_cfg.close()
+    heal_spell_col = heal_spell_col2
+    heal_spell_x = heal_spell_x2
+    heal_spell_y = heal_spell_y2
+    # print("new variables" + str(heal_spell_x) + str(heal_spell_y) + str(heal_spell_col))
+    log_add("heal spell picked and saved")
+
+
+def set_healpot_thread():
+    global heal_pot_x, heal_pot_y, heal_pot_col
+    # print("old variables" + str(heal_train_x) + str(heal_train_y) + str(heal_train_col))
+    log_add("Picking heal pot in 5, put cursor near heal value")
+    time.sleep(1)
+    log_add("Picking heal pot in 4")
+    time.sleep(1)
+    log_add("Picking heal pot in 3")
+    time.sleep(1)
+    log_add("Picking heal pot in 2")
+    time.sleep(1)
+    log_add("Picking heal pot in 1")
+    time.sleep(1)
+    heal_pot_x2, heal_pot_y2 = pyautogui.position()
+    im = pyautogui.screenshot()
+    heal_pot_col2 = im.getpixel((heal_pot_x2, heal_pot_y2))
+    cfg = open("cfg.ini").read()
+    cfg = cfg.replace("healpotCol="+str(settings[16]), "healpotCol="+str(heal_pot_col2))
+    cfg = cfg.replace("healpotX="+str(heal_pot_x), "healpotX="+str(heal_pot_x2))
+    cfg = cfg.replace("healpotY="+str(heal_pot_y), "healpotY="+str(heal_pot_y2))
+    new_cfg = open("cfg.ini", 'w')
+    new_cfg.write(cfg)
+    new_cfg.close()
+    heal_pot_col = heal_pot_col2
+    heal_pot_x = heal_pot_x2
+    heal_pot_y = heal_pot_y2
+    # print("new variables" + str(heal_pot_x) + str(heal_pot_y) + str(heal_pot_col))
+    log_add("heal pot picked and saved")
+
+
+def setup_healpot():
+    healpot_thread = threading.Thread(target=set_healpot_thread)
+    healpot_thread.start()
+
+
 def start_all():
     global attack_status, manatrain_status, food_status, heal_status, healpot_status, manapot_status
     if attack_status == 'off':
@@ -333,6 +459,15 @@ def program():
         if food_status == 'on':
             food_thread = threading.Thread(target=food_do)
             food_thread.start()
+        if heal_status == 'on':
+            heal_thread = threading.Thread(target=heal_do)
+            heal_thread.start()
+        if healpot_status == 'on':
+            heal_pot_thread = threading.Thread(target=healpot_do)
+            heal_pot_thread.start()
+        if manapot_status == 'on':
+            mana_pot_thread = threading.Thread(target=manapot_do)
+            mana_pot_thread.start()
         rand_sleep(5)
 
 
