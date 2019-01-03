@@ -25,7 +25,7 @@ settings = []
 for s in settingsOrig:
     settings.append(s.split('=')[1])
 
-#for ss in settings:
+# for ss in settings:
 #    print(ss)
 
 window_height = int(settings[0])
@@ -55,7 +55,6 @@ attack_x = int(settings[19])
 attack_y = int(settings[20])
 attack_col = settings[21]
 attack_col = str_to_col(attack_col)
-
 
 attack_status = 'off'
 heal_status = 'off'
@@ -94,7 +93,7 @@ def attack_start():
 
 def log_add(message):  # Adds message to log frame and log file
     log_message = current_time() + " " + message + "\n"
-    log_file_name = "log-" + datetime.datetime.now().strftime("%d-%m-%Y")+".txt"
+    log_file_name = "log-" + datetime.datetime.now().strftime("%d-%m-%Y") + ".txt"
     log_file = open(log_file_name, 'a+')
     log_file.write(log_message)
     app.builder.get_object('text_logframe').insert('1.0', log_message)
@@ -103,10 +102,11 @@ def log_add(message):  # Adds message to log frame and log file
 def setup_attack():
     print('not implemented')
 
+
 def attack_do():
-    #print(attack_col)
-    #print(attack_x)
-    #print(attack_y)
+    # print(attack_col)
+    # print(attack_x)
+    # print(attack_y)
     if not pyautogui.pixelMatchesColor(attack_x, attack_y, attack_col):
         if not pyautogui.pixelMatchesColor(attack_x, attack_y, (77, 77, 77)):
             pyautogui.click(attack_x, attack_y)
@@ -145,9 +145,9 @@ def manatrain_start():
 
 
 def manatrain_do():
-    #print("trying mana train")
+    # print("trying mana train")
     if pyautogui.pixelMatchesColor(mana_train_x, mana_train_y, mana_train_col):
-        #print("doing mana train")
+        # print("doing mana train")
         log_add("Casting mana training spell")
         pyautogui.hotkey(str(mana_train_key))
 
@@ -227,9 +227,9 @@ def set_manatrain_thread():
     im = pyautogui.screenshot()
     mana_train_col2 = im.getpixel((mana_train_x2, mana_train_y2))
     cfg = open("cfg.ini").read()
-    cfg = cfg.replace("manatrainCol="+str(settings[8]), "manatrainCol="+str(mana_train_col2))
-    cfg = cfg.replace("manatrainX="+str(mana_train_x), "manatrainX="+str(mana_train_x2))
-    cfg = cfg.replace("manatrainY="+str(mana_train_y), "manatrainY="+str(mana_train_y2))
+    cfg = cfg.replace("manatrainCol=" + str(settings[8]), "manatrainCol=" + str(mana_train_col2))
+    cfg = cfg.replace("manatrainX=" + str(mana_train_x), "manatrainX=" + str(mana_train_x2))
+    cfg = cfg.replace("manatrainY=" + str(mana_train_y), "manatrainY=" + str(mana_train_y2))
     new_cfg = open("cfg.ini", 'w')
     new_cfg.write(cfg)
     new_cfg.close()
@@ -278,9 +278,9 @@ def set_manapot_thread():
     im = pyautogui.screenshot()
     mana_pot_col2 = im.getpixel((mana_pot_x2, mana_pot_y2))
     cfg = open("cfg.ini").read()
-    cfg = cfg.replace("manapotCol="+str(settings[12]), "manapotCol="+str(mana_pot_col2))
-    cfg = cfg.replace("manapotX="+str(mana_pot_x), "manapotX="+str(mana_pot_x2))
-    cfg = cfg.replace("manapotY="+str(mana_pot_y), "manapotY="+str(mana_pot_y2))
+    cfg = cfg.replace("manapotCol=" + str(settings[12]), "manapotCol=" + str(mana_pot_col2))
+    cfg = cfg.replace("manapotX=" + str(mana_pot_x), "manapotX=" + str(mana_pot_x2))
+    cfg = cfg.replace("manapotY=" + str(mana_pot_y), "manapotY=" + str(mana_pot_y2))
     new_cfg = open("cfg.ini", 'w')
     new_cfg.write(cfg)
     new_cfg.close()
@@ -313,9 +313,9 @@ def set_heal_thread():
     im = pyautogui.screenshot()
     heal_spell_col2 = im.getpixel((heal_spell_x2, heal_spell_y2))
     cfg = open("cfg.ini").read()
-    cfg = cfg.replace("healspellCol="+str(settings[4]), "healspellCol="+str(heal_spell_col2))
-    cfg = cfg.replace("healspellX="+str(heal_spell_x), "healspellX="+str(heal_spell_x2))
-    cfg = cfg.replace("healspellY="+str(heal_spell_y), "healspellY="+str(heal_spell_y2))
+    cfg = cfg.replace("healspellCol=" + str(settings[4]), "healspellCol=" + str(heal_spell_col2))
+    cfg = cfg.replace("healspellX=" + str(heal_spell_x), "healspellX=" + str(heal_spell_x2))
+    cfg = cfg.replace("healspellY=" + str(heal_spell_y), "healspellY=" + str(heal_spell_y2))
     new_cfg = open("cfg.ini", 'w')
     new_cfg.write(cfg)
     new_cfg.close()
@@ -343,9 +343,9 @@ def set_healpot_thread():
     im = pyautogui.screenshot()
     heal_pot_col2 = im.getpixel((heal_pot_x2, heal_pot_y2))
     cfg = open("cfg.ini").read()
-    cfg = cfg.replace("healpotCol="+str(settings[16]), "healpotCol="+str(heal_pot_col2))
-    cfg = cfg.replace("healpotX="+str(heal_pot_x), "healpotX="+str(heal_pot_x2))
-    cfg = cfg.replace("healpotY="+str(heal_pot_y), "healpotY="+str(heal_pot_y2))
+    cfg = cfg.replace("healpotCol=" + str(settings[16]), "healpotCol=" + str(heal_pot_col2))
+    cfg = cfg.replace("healpotX=" + str(heal_pot_x), "healpotX=" + str(heal_pot_x2))
+    cfg = cfg.replace("healpotY=" + str(heal_pot_y), "healpotY=" + str(heal_pot_y2))
     new_cfg = open("cfg.ini", 'w')
     new_cfg.write(cfg)
     new_cfg.close()
@@ -368,15 +368,15 @@ def start_all():
     if manatrain_status == 'off':
         manatrain_start()
     if food_status == 'off':
-        food_start() 
+        food_start()
     if heal_status == 'off':
-        heal_start() 
+        heal_start()
     if healpot_status == 'off':
         healpot_start()
     if manapot_status == 'off':
         manapot_start()
-        
-        
+
+
 def stop_all():
     global attack_status, manatrain_status, food_status, heal_status, healpot_status, manapot_status
     if attack_status == 'on':
@@ -384,9 +384,9 @@ def stop_all():
     if manatrain_status == 'on':
         manatrain_start()
     if food_status == 'on':
-        food_start() 
+        food_start()
     if heal_status == 'on':
-        heal_start() 
+        heal_start()
     if healpot_status == 'on':
         healpot_start()
     if manapot_status == 'on':
@@ -478,8 +478,7 @@ if __name__ == '__main__':
     thread.start()
     root = tkinter.Tk()
     app = Application(root)
-    #print(app.builder.get_variable('attack_status'))
-    #test_variable()
-    #print(app.builder.get_variable('attack_status'))
+    # print(app.builder.get_variable('attack_status'))
+    # test_variable()
+    # print(app.builder.get_variable('attack_status'))
     root.mainloop()
-
