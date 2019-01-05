@@ -8,7 +8,11 @@ import datetime
 import winsound
 import sys
 import pygubu
+from desktopmagic.screengrab_win32 import (
+getDisplayRects, saveScreenToBmp, saveRectToBmp, getScreenAsImage,
+getRectAsImage, getDisplaysAsImages)
 
+pyautogui.screenshot = getScreenAsImage()
 
 def str_to_col(str_input):
     str_input = str_input.split('(')
@@ -121,7 +125,7 @@ def set_attack_thread():
     log_add("Picking attack in 1")
     time.sleep(1)
     attack_x2, attack_y2 = pyautogui.position()
-    im = pyautogui.screenshot()
+    im = pyautogui.screenshot
     attack_col2 = im.getpixel((attack_x2, attack_y2))
     cfg = open("cfg.ini").read()
     cfg = cfg.replace("attackCol=" + str(settings[21]), "attackCol=" + str(attack_col2))
@@ -272,10 +276,15 @@ def set_manatrain_thread():
     log_add("Picking mana train in 2")
     time.sleep(1)
     log_add("Picking mana train in 1")
+    print("pos")
     time.sleep(1)
+    print("pos")
     mana_train_x2, mana_train_y2 = pyautogui.position()
-    im = pyautogui.screenshot()
+    print("grabbing screen")
+    im = pyautogui.screenshot
+    print("grabbed")
     mana_train_col2 = im.getpixel((mana_train_x2, mana_train_y2))
+    print(mana_train_col2)
     cfg = open("cfg.ini").read()
     cfg = cfg.replace("manatrainCol=" + str(settings[8]), "manatrainCol=" + str(mana_train_col2))
     cfg = cfg.replace("manatrainX=" + str(mana_train_x), "manatrainX=" + str(mana_train_x2))
@@ -286,7 +295,7 @@ def set_manatrain_thread():
     mana_train_col = mana_train_col2
     mana_train_x = mana_train_x2
     mana_train_y = mana_train_y2
-    # print("new variables" + str(mana_train_x) + str(mana_train_y) + str(mana_train_col))
+    print("new variables" + str(mana_train_x) + str(mana_train_y) + str(mana_train_col))
     log_add("Mana train picked and saved")
 
 
@@ -341,7 +350,7 @@ def set_manapot_thread():
     log_add("Picking mana pot in 1")
     time.sleep(1)
     mana_pot_x2, mana_pot_y2 = pyautogui.position()
-    im = pyautogui.screenshot()
+    im = pyautogui.screenshot
     mana_pot_col2 = im.getpixel((mana_pot_x2, mana_pot_y2))
     cfg = open("cfg.ini").read()
     cfg = cfg.replace("manapotCol=" + str(settings[12]), "manapotCol=" + str(mana_pot_col2))
@@ -376,7 +385,7 @@ def set_heal_thread():
     log_add("Picking heal spell in 1")
     time.sleep(1)
     heal_spell_x2, heal_spell_y2 = pyautogui.position()
-    im = pyautogui.screenshot()
+    im = pyautogui.screenshot
     heal_spell_col2 = im.getpixel((heal_spell_x2, heal_spell_y2))
     cfg = open("cfg.ini").read()
     cfg = cfg.replace("healspellCol=" + str(settings[4]), "healspellCol=" + str(heal_spell_col2))
@@ -411,7 +420,7 @@ def set_loot_thread():
     log_add("Picking loot in 1")
     time.sleep(1)
     loot_x2, loot_y2 = pyautogui.position()
-    im = pyautogui.screenshot()
+    im = pyautogui.screenshot
     loot_col2 = im.getpixel((loot_x2, loot_y2))
     cfg = open("cfg.ini").read()
     cfg = cfg.replace("lootX=" + str(loot_x), "lootX=" + str(loot_x2))
@@ -440,7 +449,7 @@ def set_healpot_thread():
     log_add("Picking heal pot in 1")
     time.sleep(1)
     heal_pot_x2, heal_pot_y2 = pyautogui.position()
-    im = pyautogui.screenshot()
+    im = pyautogui.screenshot
     heal_pot_col2 = im.getpixel((heal_pot_x2, heal_pot_y2))
     cfg = open("cfg.ini").read()
     cfg = cfg.replace("healpotCol=" + str(settings[16]), "healpotCol=" + str(heal_pot_col2))
