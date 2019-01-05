@@ -220,8 +220,12 @@ def manatrain_start():
 
 
 def manatrain_do():
+    mana_found = False
     # print("trying mana train")
-    if pyautogui.pixelMatchesColor(mana_train_x, mana_train_y, mana_train_col):
+    for col in mana_colors:
+        if pyautogui.pixelMatchesColor(mana_train_x, mana_train_y, col):
+            mana_found = True
+    if mana_found:
         # print("doing mana train")
         log_add("Casting mana training spell")
         pyautogui.hotkey(str(mana_train_key))
@@ -238,13 +242,22 @@ def healpot_do():
 
 
 def manapot_do():
-    if not pyautogui.pixelMatchesColor(mana_pot_x, mana_pot_y, mana_pot_col):
+    mana_found = False
+    # print("trying mana train")
+    for col in mana_colors:
+        if pyautogui.pixelMatchesColor(mana_pot_x, mana_pot_y, col):
+            mana_found = True
+    if not mana_found:
         log_add("Using mana potion")
         pyautogui.hotkey(str(mana_pot_key))
 
 
 def heal_do():
-    if not pyautogui.pixelMatchesColor(heal_spell_x, heal_spell_y, heal_spell_col):
+    health_found = False
+    for col in health_colors:
+        if pyautogui.pixelMatchesColor(heal_spell_x, heal_spell_y, col):
+            health_found = True
+    if not health_found:
         log_add("Casting healing spell")
         pyautogui.hotkey(str(heal_spell_key))
 
