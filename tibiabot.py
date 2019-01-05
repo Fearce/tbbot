@@ -426,7 +426,6 @@ def set_loot_thread():
     log_add("loot pos picked and saved")
 
 
-
 def set_healpot_thread():
     global heal_pot_x, heal_pot_y, heal_pot_col
     # print("old variables" + str(heal_train_x) + str(heal_train_y) + str(heal_train_col))
@@ -464,8 +463,8 @@ def setup_healpot():
 
 def start_all():
     global attack_status, manatrain_status, food_status, heal_status, healpot_status, manapot_status, loot_status
-    if attack_status == 'off':
-        attack_start()
+    # if attack_status == 'off':
+        # attack_start()
     if manatrain_status == 'off':
         manatrain_start()
     if food_status == 'off':
@@ -476,8 +475,8 @@ def start_all():
         healpot_start()
     if manapot_status == 'off':
         manapot_start()
-    if loot_status == 'off':
-        loot_start()
+    # if loot_status == 'off':
+        # loot_start()
 
 
 def stop_all():
