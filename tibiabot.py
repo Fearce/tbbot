@@ -70,27 +70,6 @@ healpot_status = 'off'
 food_status = 'off'
 loot_status = 'off'
 
-health_colors = []
-for r in range(0, 6):
-    for g in range(58, 63):
-        for b in range(0, 4):
-            health_colors.append((r, g, b))
-
-for r in range(30, 35):
-    for g in range(58, 60):
-        for b in range(26, 31):
-            health_colors.append((r, g, b))
-
-for r in range(59, 61):
-    for g in range(57, 60):
-        for b in range(0, 4):
-            health_colors.append((r, g, b))
-
-mana_colors = []
-for r in range(1, 5):
-    for g in range(0, 2):
-        for b in range(191, 193):
-            mana_colors.append((r, g, b))
 
 def current_time():  # Makes sure the log frame isn't flooded and returns current time.
     log_count = int(app.builder.get_object('text_logframe').index('end-1c').split('.')[0])
@@ -232,11 +211,7 @@ def manatrain_do():
 
 
 def healpot_do():
-    health_found = False
-    for col in health_colors:
-        if pyautogui.pixelMatchesColor(heal_pot_x, heal_pot_y, col):
-            health_found = True
-    if not health_found:
+    if not pyautogui.pixelMatchesColor(heal_pot_x, heal_pot_y, heal_pot_col):
         log_add("Using healing potion")
         pyautogui.hotkey(str(heal_pot_key))
 
