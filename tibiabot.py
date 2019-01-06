@@ -11,8 +11,14 @@ import pygubu
 from desktopmagic.screengrab_win32 import (
 getDisplayRects, saveScreenToBmp, saveRectToBmp, getScreenAsImage,
 getRectAsImage, getDisplaysAsImages)
+import pytesseract
+pytesseract.pytesseract.tesseract_cmd = 'C:/Program Files (x86)/Tesseract-OCR/tesseract'
 
 pyautogui.screenshot = getScreenAsImage()
+
+#saveRectToBmp('screencapture_256_256.bmp', rect=(1400, 215, 1450, 229))
+#saveRectToBmp('screencapture_25226_256.bmp', rect=(1400, 229, 1450, 244))
+
 
 def str_to_col(str_input):
     str_input = str_input.split('(')
@@ -161,9 +167,10 @@ def attack_do():
     # print(attack_y)
     if pyautogui.pixelMatchesColor(attack_x, attack_y, attack_col):
         if not pyautogui.pixelMatchesColor(attack_x, attack_y, (77, 77, 77)):
-            pyautogui.click(attack_x, attack_y)
             loot_do()
-            pyautogui.moveTo(attack_x, attack_y, 1)
+            time.sleep(1)
+            pyautogui.click(attack_x, attack_y)
+            pyautogui.moveTo(attack_x, attack_y, 0.1)
 
 
 def heal_start():
@@ -199,10 +206,18 @@ def manatrain_start():
 
 
 def manatrain_do():
-    if pyautogui.pixelMatchesColor(mana_train_x, mana_train_y, mana_train_col):
-        # print("doing mana train")
-        log_add("Casting mana training spell")
-        pyautogui.hotkey(str(mana_train_key))
+    mana_image = getRectAsImage((mana_train_x, mana_train_y, mana_train_x+30, mana_train_y+15))
+    mana_value = pytesseract.pytesseract.image_to_string(mana_image, config='-l digits1+digits+digits_comma --psm 10 --oem 3 -c tessedit_char_whitelist=0123456789')
+    print("current mana: " + mana_value)
+    try:
+        mana_value = int(mana_value)
+        if mana_value > 250 and mana_value < 320:
+           # print("doing mana train")
+           log_add("Casting mana training spell")
+           #pyautogui.hotkey(str(mana_train_key))
+           pyautogui.hotkey(str(heal_spell_key))
+    except:
+        print(mana_value + " is not a number")
 
 
 def healpot_do():
@@ -212,15 +227,31 @@ def healpot_do():
 
 
 def manapot_do():
-    if not pyautogui.pixelMatchesColor(mana_pot_x, mana_pot_y, mana_pot_col):
-        log_add("Using mana potion")
-        pyautogui.hotkey(str(mana_pot_key))
+    mana_image = getRectAsImage((mana_train_x, mana_train_y, mana_train_x + 30, mana_train_y + 15))
+    mana_value = pytesseract.pytesseract.image_to_string(mana_image,
+                                                         config='-l digits1+digits+digits_comma --psm 10 --oem 3 -c tessedit_char_whitelist=0123456789')
+    print("current mana: " + mana_value)
+    try:
+        mana_value = int(mana_value)
+        if mana_value < 160 and mana_value >100:
+            log_add("Using mana potion")
+            pyautogui.hotkey(str(mana_pot_key))
+    except:
+        print(mana_value + " is not a number")
 
 
 def heal_do():
-    if not pyautogui.pixelMatchesColor(heal_spell_x, heal_spell_y, heal_spell_col):
-        log_add("Casting healing spell")
-        pyautogui.hotkey(str(heal_spell_key))
+    heal_image = getRectAsImage((heal_spell_x, heal_spell_y, heal_spell_x + 30, heal_spell_y + 15))
+    heal_value = pytesseract.pytesseract.image_to_string(heal_image,
+                                                         config='-l digits1+digits+digits_comma --psm 10 --oem 3 -c tessedit_char_whitelist=0123456789')
+    print("current health: " + heal_value)
+    try:
+        heal_value = int(heal_value)
+        if heal_value < 550 and heal_value > 20:
+            log_add("Casting healing spell")
+            pyautogui.hotkey(str(heal_spell_key))
+    except:
+        print(heal_value + " is not a number")
 
 
 def manapot_start():
@@ -282,6 +313,7 @@ def set_manatrain_thread():
     print("grabbing screen")
     im = pyautogui.screenshot
     print("grabbed")
+    #print(pytesseract.pytesseract.image_to_string(im))
     mana_train_col2 = im.getpixel((mana_train_x2, mana_train_y2))
     print(mana_train_col2)
     cfg = open("cfg.ini").read()
@@ -471,8 +503,8 @@ def setup_healpot():
 
 def start_all():
     global attack_status, manatrain_status, food_status, heal_status, healpot_status, manapot_status, loot_status
-    # if attack_status == 'off':
-        # attack_start()
+    if attack_status == 'off':
+        attack_start()
     if manatrain_status == 'off':
         manatrain_start()
     if food_status == 'off':
@@ -483,8 +515,8 @@ def start_all():
         healpot_start()
     if manapot_status == 'off':
         manapot_start()
-    # if loot_status == 'off':
-        # loot_start()
+    if loot_status == 'off':
+        loot_start()
 
 
 def stop_all():
