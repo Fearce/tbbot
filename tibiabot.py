@@ -211,7 +211,7 @@ def manatrain_do():
     print("current mana: " + mana_value)
     try:
         mana_value = int(mana_value)
-        if mana_value > 250 and mana_value < 320:
+        if mana_value == 280:
            # print("doing mana train")
            log_add("Casting mana training spell")
            #pyautogui.hotkey(str(mana_train_key))
@@ -511,8 +511,8 @@ def start_all():
         food_start()
     if heal_status == 'off':
         heal_start()
-    if healpot_status == 'off':
-        healpot_start()
+    # if healpot_status == 'off':
+    #    healpot_start()
     if manapot_status == 'off':
         manapot_start()
     if loot_status == 'off':
